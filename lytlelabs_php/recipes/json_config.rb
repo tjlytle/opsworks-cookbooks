@@ -17,16 +17,16 @@ else
 end
 
 node[:deploy].each do |application, deploy|
-  if node["config"][application]["json"]
+  if node["config"][application.to_s]["json"]
     Chef::Log.debug('merging found app config');
-    config_app = node["config"][application]["json"]
+    config_app = node["config"][application.to_s]["json"]
     config_app = config.deep_merge(config_app)
   else
     config_app = config
   end
 
-  if node["config"][application]["path"]
-    config_path = node["config"][application]["path"]
+  if node["config"][application.to_s]["path"]
+    config_path = node["config"][application.to_s]["path"]
   end
 
   Chef::Log.debug(config_app);
