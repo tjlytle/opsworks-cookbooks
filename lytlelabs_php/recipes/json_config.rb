@@ -7,26 +7,26 @@ end
 
 Chef::Log.debug('creating json based config')
 
-if node["config"]["json"]
+if node["config"]["global"]["json"]
   Chef::Log.debug('global config found');
-  config = node["config"]["json"]
-  config_path = node["config"]["path"]
+  config = node["config"]["global"]["json"]
+  config_path = node["config"]["global"]["path"]
 else
   config = []
+  path = ""
 end
 
 node[:deploy].each do |application, deploy|
-
-  if deploy["config"]["json"]
+  if node["config"][application]["json"]
     Chef::Log.debug('merging found app config');
-    config_app = deploy["config"]["json"];
+    config_app = node["config"][application]["json"]
     config_app = config.deep_merge(config_app)
   else
     config_app = config
   end
 
-  if deploy["config"]["path"]
-    config_path = deploy["config"]["path"]
+  if node["config"][application]["path"]
+    config_path = node["config"][application]["path"]
   end
 
   Chef::Log.debug(config_app);
